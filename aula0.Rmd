@@ -62,16 +62,53 @@ Se você precisar de mais ajuda, utilize a ferramenta de ajuda (ou preceda o nom
 
 ```
 
+```{r car 2.5}
+cars$speed
+#Speed de 2 até 10:
+cars$speed[2:10]
+idx <- c(1,3,10)
+#Speeds 1,3 e 15:
+cars$speed[idx]
+rm(idx)
+```
+
+```{r}
+dados <-  cars
+dados$accel <- dados$speed**2 / (2*dados$speed)  
+
+summary(dados)
+
+#Amostra da sequencia de 10 valores aleatorios de aceleração
+set.seed(10)
+idx <-  sample(1:50,10)
+dados$accel[idx]
+rm(idx)
+```
+
+
 Para entender a informação contida, podemos calcular alguns parâmetros representativos, relações entre variáveis ou ainda graficar:
 ```{r cars.3}
 #estatisticas
+print('Frenagem média: x milhas por hora')
+mean(dados$accel)
+print("Mediana")
+median(dados$accel)
+print("Variância")
+var(dados$accel)
+print("Desvio padrão")
+sqrt(var(dados$accel))
 #como executar funções
 ```
 
 ```{r cars.4}
 #relações + visualizações
-
+hist(dados$accel)
+hist(dados$speed)
+plot(dados$speed, dados$dist)
 #criar novas variáveis + visualizaç~eos
+correlacao <-  cor(dados)
+library(corrplot)
+corrplot(correlacao)
 
 ```
 
@@ -119,7 +156,7 @@ dados <- datasets::CO2
 #visualize o dataset
 ```
 
-```{r co2}
+```{r co2.2}
 #manipulação de variaveis
 #texto,fator
 #ifelse
