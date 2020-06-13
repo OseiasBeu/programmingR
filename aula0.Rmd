@@ -1,0 +1,157 @@
+---
+title: "Programação Estatística - Aula0"
+output:
+  html_document:
+    df_print: paged
+  pdf_document: default
+---
+
+Este é um modelo de caderno de anotações ([R Markdown](http://rmarkdown.rstudio.com) Notebook).
+Apesar de os scripts comuns permitirem contruções rápidas de análise, o código pode ficar escasso de comentários, dificultando a interpretação e análise.
+
+O modo de notebook intercala trechos de código com trechos de texto. Deste modo, você pode escrever anotações para os próximos leitores ou até para sí mesmo, facilitando a releitura posterior.
+
+Existem diversas ferramentas de edição de texto aqui:
+
+# titulos: Alguns exemplos de edição de texto
+
+## subtitulos: itemização
+
+* itemização1
+* itemização2
+  + subitemização2a
+  + subitemização2b
+1. numeração1
+2. *negrito*
+3. equações $\mu < \frac{1}{2}$
+
+Se precisar de mais exemplos, visite [https://rmarkdown.rstudio.com/authoring_basics.html]
+  
+Em seguida, temos um exeplo de bloco (chunk) de código:
+
+```{r plot}
+#note o trecho de código em cor diferenciada
+plot(cars)
+```
+
+O formato aqui é mais técnico emenos visual. Entretanto, podemos facilmente cklocar um formato visual compilando o notebook em um html. Vá em preview - knit to html. Aguarde enquanto o software compila (acompanhe pelo console)
+
+
+# Parte 2
+
+Dentro do software, tanto nas bibliotecas base como adicionais, exite uma variedade de conjunto de dados para uso e exploração.
+Vamos usar um deles de exeplo para entender melhor o uso das variáveis:
+
+```{r cars}
+cars
+```
+
+a maior parte dos dados que trabalharemos é bidimensional, composto de linhas e colunas.
+Cada linha é uma amostra de informação. Uma amostra coletada dentre uma população.
+Cada coluna é uma informação diferente que temos da mesma amostra.
+Neste caso, temos diversos carros , com as velocidades e distâncias de parada dos mesmos.
+
+Se você precisar de mais ajuda, utilize a ferramenta de ajuda (ou preceda o nome do dataset de ?)
+```{r cars.2}
+?cars
+#pode colcoar anotações aqui também. a recomendação pe colocar lembretes e anotações mais tecnicas, que não cabem no corpo do texto de documento.
+
+#Boa prática para uso dos datasets
+
+#outras maneiras de visualizar o dataset!
+
+```
+
+Para entender a informação contida, podemos calcular alguns parâmetros representativos, relações entre variáveis ou ainda graficar:
+```{r cars.3}
+#estatisticas
+#como executar funções
+```
+
+```{r cars.4}
+#relações + visualizações
+
+#criar novas variáveis + visualizaç~eos
+
+```
+
+
+```{r cars.5}
+#ajuste + visualização
+#criando variáveis
+```
+
+# Leitura e Escrita de arquivos.
+
+Visite o site [https://archive.ics.uci.edu/ml/datasets.php] e baixe o dataset Wine.
+
+```{r leitura}
+#abra com editor de texto (bloco de notas)
+dados <- read.csv("C:\\Users\\fekop\\Documents\\aulas\\Programação Estatística\\wine.data")
+#corrija cabecalho usando site.
+
+
+```
+
+```{r wine.explore}
+
+```
+
+
+```{r wine.manipulaçao}
+
+```
+
+```{r wine.visualizações}
+
+```
+
+```{r wine.loops}
+
+```
+
+
+# Mais datasets
+
+
+```{r co2}
+dados <- datasets::CO2
+#visualize o dataset
+```
+
+```{r co2}
+#manipulação de variaveis
+#texto,fator
+#ifelse
+```
+
+# Voltando para estátistica
+
+```{r media}
+
+```
+
+```{r variancia}
+
+```
+
+```{r correlacao}
+
+```
+
+```{r naoparametricas}
+#mediana
+#quantis
+#min max
+```
+
+```{r t.contingencia}
+#table
+```
+
+```{r amostragem.vn}
+
+```
+
+
+
