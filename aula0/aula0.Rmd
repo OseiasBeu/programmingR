@@ -74,7 +74,7 @@ rm(idx)
 
 ```{r}
 dados <-  cars
-dados$accel <- dados$speed**2 / (2*dados$speed)  
+dados$accel <- dados$speed**2 / (2*dados$dist)  
 
 summary(dados)
 
@@ -115,6 +115,12 @@ corrplot(correlacao)
 
 ```{r cars.5}
 #ajuste + visualização
+#y(x1,x2,x3,x....); X são os preditores ( variaveis independentes) e y a previsão (variavel dependente) Ou seja, y depende de x para acontecer.
+modelo <-  lm(dist ~ speed, data=dados)
+plot(dados$speed, dados$dist, col='red') #dados
+lines(dados$speed, modelo$fitted.values,col="blue") #ajuste
+summary(modelo)
+
 #criando variáveis
 ```
 
@@ -124,14 +130,61 @@ Visite o site [https://archive.ics.uci.edu/ml/datasets.php] e baixe o dataset Wi
 
 ```{r leitura}
 #abra com editor de texto (bloco de notas)
-dados <- read.csv("C:\\Users\\fekop\\Documents\\aulas\\Programação Estatística\\wine.data")
+dados <- read.csv("https://raw.githubusercontent.com/OseiasBeu/programmingR/master/aula0/wine.data", header= F)
+head(dados)
+colnames(dados)
+colnames(dados) <- c(
+                    "Categoria",
+                    "Alcool",
+                     "Ácido.Málico",
+                     "Resido.Seco",
+                     "Alcalinidade.do.Resíduo.seco", 
+                     "Magnésio",
+                     "Fenóis.totais",
+                     "Flavonóides",
+                     "Fenóis.não.Flavonóides",
+                     "proanthocyanis",
+                     "intensidade.de.cor",
+                     "tonalidade",
+                     "OD280/OD315",
+                     "Prolina"
+                     )
 #corrija cabecalho usando site.
-
+head(dados)
 
 ```
 
 ```{r wine.explore}
+summary(dados)
+corrplot(cor(dados))
+hist(dados$Flavonóides)
+hist(dados$`OD280/OD315`, breaks = 20)
+hist(dados$proanthocyanis,breaks = 20)
+table(dados$Categoria)
 
+
+```
+```{r wine.explore 2}
+idx1 <- dados$Categoria == 1
+idx2 <- dados$Categoria == 2
+idx3 <- dados$Categoria == 3
+hist(dados$proanthocyanis, main = "Todos",breaks = 20)
+hist(dados$proanthocyanis[idx1],main="Vinho1", breaks = 20)
+hist(dados$proanthocyanis[idx2],main="Vinho2", breaks = 20)
+hist(dados$proanthocyanis[idx3],main="Vinho3", breaks = 20)
+#Gráficos de dispersão
+
+#plot(dados$Magnésio,dados$`OD280/OD315`, col=dados$Categoria)
+#plot(dados$Categoria)
+#plot(dados$Flavonóides, dados$Fenóis.totais, col=dados$Categoria)
+#plot(dados$Categoria,dados$Prolina, col=dados$Categoria)
+modelo <-  lm(Prolina ~ Alcool, data=dados)
+plot(dados$Alcool,dados$Prolina, col=dados$Categoria)
+lines(dados$Alcool, modelo$fitted.values,col="blue") 
+#Adicione a reta de tendencia (ajuste/regressão linear) neste gráfico de dospersão
+modelo <-  lm(Flavonóides~Fenóis.totais,data=dados)
+plot(dados$Flavonóides,dados$Fenóis.totais, col=dados$Categoria)
+lines(dados$Fenóis.totais, modelo$fitted.values,col="blue") 
 ```
 
 
@@ -144,7 +197,19 @@ dados <- read.csv("C:\\Users\\fekop\\Documents\\aulas\\Programação Estatístic
 ```
 
 ```{r wine.loops}
+#Calculando o desvio padrão de todas as colunas:
+#FOR
+for( colu in 1:14){
+  print(colnames(dados)[colu])
+  print(sd(dados[,colu]))
+  
+}
 
+#while
+
+
+#apply
+#apply(array, margin, ...)
 ```
 
 
@@ -153,13 +218,31 @@ dados <- read.csv("C:\\Users\\fekop\\Documents\\aulas\\Programação Estatístic
 
 ```{r co2}
 dados <- datasets::CO2
+?datasets::CO2
 #visualize o dataset
+summary(dados)
+head(dados)
 ```
 
 ```{r co2.2}
 #manipulação de variaveis
+
 #texto,fator
 #ifelse
+ifelse(dados$Treatment == "chilled","resfriado","não-resfriado")
+
+#Comparando duas colunas
+cbind(
+  as.character(dados$Treatment),
+  ifelse(dados$Treatment == "chilled","resfriado","não-resfriado")
+  )
+
+#Tabela dinâmica - Utilizamos para contar uma quantidade de casos existentes
+table(
+  as.character(dados$Treatment),
+  ifelse(dados$Treatment == "chilled","resfriado","não-resfriado")
+  )
+
 ```
 
 # Voltando para estátistica
