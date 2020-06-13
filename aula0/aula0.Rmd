@@ -243,11 +243,23 @@ table(
   ifelse(dados$Treatment == "chilled","resfriado","não-resfriado")
   )
 
+dados$Treatment2 <-  ifelse(dados$Treatment == "chilled","resfriado","não-resfriado")
+dados
+
 ```
 
 # Voltando para estátistica
 
 ```{r media}
+#Hipotese: Grama resfriada consume menos gás carbônico:
+idx <- dados$Treatment2 == 'resfriado'
+consumo.resfriada <- dados$uptake[idx]
+
+idx2 <- dados$Treatment2 == 'não-resfriado'
+consumo.morno <- dados$uptake[idx2]
+
+mean(consumo.morno)
+mean(consumo.resfriada)
 
 ```
 
