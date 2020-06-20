@@ -1,0 +1,47 @@
+---
+title: "Aula1"
+author: "Oséias Beu"
+date: "20/06/2020"
+output: html_document
+---
+
+```{r correlacao1}
+?datasets::iris
+
+dados <- datasets::iris
+summary(dados)
+head(dados)
+
+print('Correlação')
+correlacao <- cor(dados[,1:4])
+library(corrplot)
+corrplot(correlacao )
+```
+
+
+```{r corralacao2}
+?datasets::state.x77
+dados <- datasets::state.x77
+summary(dados)
+correlacao <- cor(dados)
+corrplot(correlacao, order='hclust', addrect=3)
+
+
+```
+```{r corralacao3}
+?datasets::swiss
+dados <- datasets::swiss
+summary(dados)
+correlacao <- cor(dados)
+corrplot(correlacao, order='hclust', addrect=2)
+fit <- lm(Infant.Mortality ~ Fertility, data = dados)
+summary(fit)
+
+plot(dados$Fertility, dados$Infant.Mortality) #Gera gráfico de dispersão
+lines(dados$Fertility, fit$fitted.values, col='red') # Adiciona linha de ajuste de reta
+
+
+
+
+```
+

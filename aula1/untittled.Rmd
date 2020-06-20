@@ -1,0 +1,279 @@
+---
+title: "Programação Estatística - Aula0"
+output:
+  html_document:
+    df_print: paged
+  pdf_document: default
+---
+
+Este é um modelo de caderno de anotações ([R Markdown](http://rmarkdown.rstudio.com) Notebook).
+Apesar de os scripts comuns permitirem contruções rápidas de análise, o código pode ficar escasso de comentários, dificultando a interpretação e análise.
+
+O modo de notebook intercala trechos de código com trechos de texto. Deste modo, você pode escrever anotações para os próximos leitores ou até para sí mesmo, facilitando a releitura posterior.
+
+Existem diversas ferramentas de edição de texto aqui:
+
+# titulos: Alguns exemplos de edição de texto
+
+## subtitulos: itemização
+
+* itemização1
+* itemização2
+  + subitemização2a
+  + subitemização2b
+1. numeração1
+2. *italico*
+3. equações $\mu < \frac{1}{2}$
+
+Se precisar de mais exemplos, visite [https://rmarkdown.rstudio.com/authoring_basics.html]
+  
+Em seguida, temos um exemplo de bloco (chunk) de código:
+
+```{r plot}
+#note o trecho de código em cor diferenciada
+plot(cars)
+```
+
+O formato aqui é mais técnico emenos visual. Entretanto, podemos facilmente cklocar um formato visual compilando o notebook em um html. Vá em preview - knit to html. Aguarde enquanto o software compila (acompanhe pelo console)
+
+
+# Parte 2
+
+Dentro do software, tanto nas bibliotecas base como adicionais, exite uma variedade de conjunto de dados para uso e exploração.
+Vamos usar um deles de exeplo para entender melhor o uso das variáveis:
+
+```{r cars}
+cars
+```
+
+a maior parte dos dados que trabalharemos é bidimensional, composto de linhas e colunas.
+Cada linha é uma amostra de informação. Uma amostra coletada dentre uma população.
+Cada coluna é uma informação diferente que temos da mesma amostra.
+Neste caso, temos diversos carros , com as velocidades e distâncias de parada dos mesmos.
+
+Se você precisar de mais ajuda, utilize a ferramenta de ajuda (ou preceda o nome do dataset de ?)
+
+```{r cars.2}
+?cars
+#pode colcoar anotações aqui também. a recomendação pe colocar lembretes e anotações mais tecnicas, que não cabem no corpo do texto de documento.
+
+#Boa prática para uso dos datasets
+
+#outras maneiras de visualizar o dataset!
+
+```
+
+
+```{r cars.2.5}
+cars$dist[1:10]
+#tente apresentar as speeds de 2:12
+cars$speed[2:12]
+#tente apresentar as dist 1, 3 e 15
+idx <- c(1,3,15)
+cars$speed[idx]
+rm(idx)
+
+
+
+```
+
+```{r torr}
+# 0 = V0^2 + 2*a*dist
+# aceleração = Vinicial^2/(2*dist)
+dados <- cars
+dados$accel <- dados$speed**2 / (2*dados$dist)
+dados
+head(dados)
+str(dados)
+#View(dados)
+summary(dados)
+dados$accel[50]
+
+#amostrar 10 valores aleatorios da sequencia de 50 acelerações
+set.seed(10)
+idx <- sample(1:50,10)
+dados$accel[idx]
+rm(idx)
+```
+
+
+
+Para entender a informação contida, podemos calcular alguns parâmetros representativos, relações entre variáveis ou ainda graficar:
+```{r cars.3}
+#estatisticas
+#calculando média de acelerações
+print("frenagem média")
+mean(dados$accel)
+print("mediana")
+median(dados$accel)
+print("variância")
+var(dados$accel)
+print("desvio padrão")
+sqrt(var(dados$accel))
+
+#como executar funções
+```
+
+```{r cars.4}
+#relações + visualizações
+hist(dados$accel)
+hist(dados$speed)
+plot(dados$speed,dados$dist)
+#criar novas variáveis + visualizaç~eos
+#correlações
+correlacao <- cor(dados)
+library(corrplot)
+corrplot(correlacao)
+
+```
+
+
+```{r cars.5}
+#ajuste + visualização
+#y(x1,x2,x3,x4,x5,x6,..); onde x são os preditores (variáveis indepentedentes) e y a previsão (variável dependente.
+#no R: y ~ x1 + x2 + x3 + x4 +...
+modelo <- lm(dist ~ speed,data=dados)
+modelo
+plot(dados$speed,dados$dist,col="red",main="Carros antigos") #dados
+lines(dados$speed,modelo$fitted.values,col="blue") #ajuste
+summary(modelo)
+#criando variáveis
+```
+
+# Leitura e Escrita de arquivos.
+
+Visite o site [https://archive.ics.uci.edu/ml/datasets.php] e baixe o dataset Wine.
+
+```{r leitura}
+#abra com editor de texto (bloco de notas)
+#dados <- read.csv("C:\\Users\\fekop\\Documents\\aulas\\Programação Estatística\\wine.data")
+dados <- read.csv("https://archive.ics.uci.edu/ml/machine-learning-databases/wine/wine.data",header = F)
+#corrija cabecalho usando site.
+
+colnames(dados) <- c(
+  "Categoria",
+  "Álcool", #1
+  "Ácido.Málico",
+  "Resíduo.seco", 
+  "Alcalinidade.Resíduo",
+  "Magnésio",#5
+  "Fenóis.totais",
+  "Flavonóides",
+  "fenóis.não.flavonoides",
+  "Proanthocyanins",
+  "intensidade.de.cor",
+  "tonalidade",
+  "OD280/OD315",
+  "Prolina"
+  )
+head(dados)
+#dados$Resíduo.seco
+#dados[,"Resíduo.seco"]
+
+```
+
+```{r wine.explore}
+summary(dados)
+corrplot(cor(dados))
+hist(dados$Proanthocyanins,breaks=20)
+table(dados$Categoria)
+```
+```{r wine.explore.2}
+idx1 <- dados$Categoria == 1
+idx2 <- dados$Categoria == 2
+idx3 <- dados$Categoria == 3
+hist(dados$Proanthocyanins,main="Todos",breaks=20)
+hist(dados$Proanthocyanins[idx1],main="Vinho1",breaks=20)
+hist(dados$Proanthocyanins[idx2],main="Vinho2",breaks=20)
+hist(dados$Proanthocyanins[idx3],main="Vinho3",breaks=20)
+
+plot(dados$Fenóis.totais,dados$Flavonóides,col=dados$Categoria) #vamos criar alguns gráficos de dispersão para procurar potenciais agrupamentos.
+
+#adicione a reta de tendecia (ajuste/regressao linear) neste gráfco de dispersão
+modelo <- lm(Flavonóides ~ Fenóis.totais,data=dados)
+lines(dados$Fenóis.totais,modelo$fitted.values,col="blue")
+
+```
+
+
+
+```{r wine.loops}
+#vamos calcular o desvio padrão de todas as colunas
+for (colu in 2:14) {
+  print(colnames(dados)[colu])
+  print(sd(dados[,colu]))
+}
+
+```
+
+
+# Mais datasets
+
+
+```{r co2}
+dados <- datasets::CO2
+?datasets::CO2
+summary(dados)
+#visualize o dataset
+```
+
+```{r co2.2}
+#manipulação de variaveis
+#ifelse(dados$Treatment == "chilled","resfriado","não-resfriado")
+cbind(
+  as.character(dados$Treatment),
+  ifelse(dados$Treatment == "chilled","resfriado","não-resfriado")
+  )
+
+#tabela
+table(
+  as.character(dados$Treatment),
+  ifelse(dados$Treatment == "chilled","resfriado","não-resfriado")
+  )
+dados$Treatment2 <- ifelse(dados$Treatment == "chilled","resfriado","não-resfriado")
+
+#texto,fator
+#ifelse
+```
+
+# Voltando para estátistica
+
+```{r media}
+#Hipótese: Grama resfriada consome menos ga´s carbônico?
+
+idx <- dados$Treatment2 == "resfriado"
+consumo.resfriada <- dados$uptake[idx]
+
+idx <- dados$Treatment2 == "não-resfriado"
+consumo.morno <- dados$uptake[idx]
+
+mean(consumo.resfriada)
+sd(consumo.resfriada)
+mean(consumo.morno)
+sd(consumo.morno)
+t.test(consumo.morno,consumo.resfriada)
+```
+
+```{r variancia}
+
+```
+
+```{r correlacao}
+
+```
+
+```{r naoparametricas}
+#mediana-
+#quantis
+#min max
+```
+
+```{r t.contingencia}
+#table
+```
+
+```{r amostragem.vn}
+
+```
+
+
