@@ -77,6 +77,42 @@ boxplot(dados$casual ~ dados$estacao, notch=T) #utilivamos um boxplor quando que
 
 #Vamos reproduzir o boxplor para usuários registrados:
 boxplot(dados$registered ~ dados$estacao, notch=T)
+boxplot(dados$registered ~ dados$estacao + dados$holiday)
+```
 
+
+```{r  Bike_Sharing2}
+dados <- read.csv("https://raw.githubusercontent.com/OseiasBeu/Data-Science/master/DataSets/Bike-Sharing-Dataset/day.csv")
+dados$instant <- NULL
+dados$dteday <- NULL
+dados$season <- as.factor(dados$season)
+dados$yr <- NULL
+dados$mnth <- NULL
+dados$holiday <- as.factor(dados$holiday)
+dados$weekday <- as.factor(dados$weekday)
+dados$workingday < as.factor(dados$workingday)
+#Comparando workingday com Holiday
+#table(dados$workingday, dados$holiday,dnn=c("Workinday","Holiday"))
+str(dados)
+
+#modelo <- lm(casual ~ temp + atemp + hum + weathersit + workingday + windspeed + weekday + holiday + season, data=dados)
+#summary(modelo)
+
+#Removendo a variável atemp e holiday por serem pouco significativas no modelo linear:
+#Modelo Casual:
+casual <- lm(casual ~ temp + hum + weathersit + workingday + windspeed + weekday + season, data=dados)
+
+#Modelo registrados:
+registrados <- lm(registered ~ temp + hum + weathersit + workingday + windspeed + weekday + season, data=dados)
+summary(casual)
+summary(registrados)
+
+```
+```{r}
+head(dados)
+aggregate(dados$casual, by=list(dados$workingday,dados$season), FUN=mean)
+
+#Calculando a mediana de usuarios casuais agrupando por dias da semana:
+aggregate(dados$casual, by=list(dados$weekday), FUN=median)
 ```
 
