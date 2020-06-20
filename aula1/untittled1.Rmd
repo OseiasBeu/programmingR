@@ -44,4 +44,39 @@ lines(dados$Fertility, fit$fitted.values, col='red') # Adiciona linha de ajuste 
 
 
 ```
+```{r}
+fit <- lm(Agriculture ~ Fertility, data = dados)
+summary(fit)
+```
+
+## Estudo de caso
+[https://archive.ics.uci.edu/ml/machine-learning-databases/00275/]
+```{r  Bike_Sharing}
+dados <- read.csv("https://raw.githubusercontent.com/OseiasBeu/Data-Science/master/DataSets/Bike-Sharing-Dataset/day.csv")
+summary(dados)
+head(dados)
+dados$instant <- NULL
+dados$dteday <- as.Date(dados$dteday)
+dados$dia <- format(dados$dteday ,"%d") # Caso queira manipular datas
+str(dados)
+
+#1° Exploração: Usuário casual aumenta quando a temperatuda sensivel aumenta?
+plot(dados$atemp,dados$casual) # Utilizamos o scatterplot proque temos duas variáveis numéricas
+modelo <- lm(casual ~ atemp, data= dados)
+summary(modelo)
+abline(modelo$coefficients, col="red")
+
+#2º Exploração: A quantidade de usuários casuais muda com a estação do ano?
+dados$estacao <- as.character(dados$season)
+dados$estacao <- ifelse(dados$season ==1,"inverno",dados$estacao)
+dados$estacao <- ifelse(dados$season ==2,"primavera",dados$estacao)
+dados$estacao <- ifelse(dados$season ==3,"verão",dados$estacao)
+dados$estacao <- ifelse(dados$season ==4,"outono",dados$estacao)
+boxplot(dados$casual ~ dados$estacao, notch=T) #utilivamos um boxplor quando queremos fazer o cruzamento de uma variável numérica com uma variável categórica
+
+
+#Vamos reproduzir o boxplor para usuários registrados:
+boxplot(dados$registered ~ dados$estacao, notch=T)
+
+```
 
