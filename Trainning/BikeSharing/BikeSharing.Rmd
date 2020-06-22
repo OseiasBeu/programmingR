@@ -63,7 +63,7 @@ dados$season <-  NULL
 dados$yr <-  NULL
 #dados$mnth <-  NULL
 #dados$holiday <-  NULL
-dados$weekday <-  NULL
+#dados$weekday <-  NULL
 #dados$workingday <-  NULL
 str(dados)
 ```
@@ -74,6 +74,8 @@ Escrevendo o modelo de regressão linear:
 ```{r bike4}
 plot(dados$atemp, dados$casual)
 ```
+Dessa forma é possível ver que temos uma relação positiva entre o número de pessoas que alugam bicicletas quando temos um aumento da temperatura do ambiente.
+
 
 Escrevendo o modelo de regressão linear:
 ```{r bike5}
@@ -83,11 +85,21 @@ modelo <- lm(casual ~atemp, data = dados)
 abline(modelo$coefficients, col="red")
 
 ```
-Analisando o modelo de regressão linear:
+Acima, temos uma linha de ajuste com o slope (reta crescnte) ou seja, uma linha traçada com os valores esperados.Note que temos um númerp de resíduos bastante algo. Mas, isso não altera o valor de nossa relação.
+
+Agora, analisando o modelo de regressão linear, temos que:
 
 ```{r bike6}
 summary(modelo)
 ```
+
+Como podem ver, nosso coeficiênte de determinação (R-SQUARED) é de 0.29. Ele nos diz o quanto que o eixo X explica o eixo Y. No resultado acima temos que nosso X explica 29% (0.29 * 100) do nosso Y. Os outros 71% são explicados por outros fatores, ou seja, são resíduos. (São os fatores que fazem com que nossos pontos fiquem muito distantes da reta.)
+Temos um erro padrão de 576 o que significa que não está muito longe da reta.
+O valor de p nos diz a probabilidade desses valores serem atribuidos ao acaso, portanto, nesse caso, temos que a chance desses valores estarem ao acaso são de 0%.
+
+
+
+
 
 
 
@@ -115,10 +127,10 @@ boxplot(dados$registered ~ dados$estacao + dados$holiday)
 
 ```{r bike8}
 #Modelo Casual:
-casual <- lm(casual ~ temp + hum + weathersit + workingday + windspeed + weekday + season, data=dados)
+casual <- lm(casual ~ temp + hum + weathersit + windspeed + estacao, data=dados)
 
 #Modelo registrados:
-registrados <- lm(registered ~ temp + hum + weathersit + workingday + windspeed + weekday + season, data=dados)
+registrados <- lm(registered ~ temp + hum + weathersit + windspeed + estacao, data=dados)
 summary(casual)
 summary(registrados)
 
