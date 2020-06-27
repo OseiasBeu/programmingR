@@ -1,30 +1,82 @@
 ---
-title: "Exam"
+title: "Performance de Estudantes"
 author: "Oséias Beu"
 date: "27/06/2020"
 output: html_document
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+## Performance de Estudantes
+Base para download do arquivo: <https://archive.ics.uci.edu/ml/datasets/Student+Performance#>.
+
+
+
+
+Todas as colunas com .x são referentes aos dados de matemática; .y são referentes aos dados de portugues
+
+```{r importacao do arquivo}
+library(corrplot)
+install.packages("randomForest")
+library(randomForest)
+d1=read.table("https://raw.githubusercontent.com/OseiasBeu/Data-Science/master/DataSets/student/student-mat.csv",sep=";",header=TRUE)
+d2=read.table("https://raw.githubusercontent.com/OseiasBeu/Data-Science/master/DataSets/student/student-por.csv",sep=";",header=TRUE)
+
+d3=merge(d1,d2,by=c("school","sex","age","address","famsize","Pstatus","Medu","Fedu","Mjob","Fjob","reason","nursery","internet"))
+print(nrow(d3)) # 382 students
+summary(d1)
+summary(d2)
+str(d1)
 ```
 
-## R Markdown
+Verificando o número de NAs que temos por coluna. 
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+```{r computando NAS}
+colSums(is.na(d3))
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
 ```
 
-## Including Plots
+Vamos corelacionar as colunas númericas:
 
-You can also embed plots, for example:
+```{r correlacionando}
+correlacionando <- cor(d3[ ,c(7,8,15,16,17,24:33,44:53)]) # removendo da coluna 44 até a 53 para ficarmos somente com os dados de portugues 
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+correlacionando <- cor(d3[ ,c(7,8,15,16,17,24:33)])
+#corrplot(correlacionando, order='hclust') # Agrupamento por hierarquia
+corrplot(correlacionando, order='FPC')
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+Notas:
+
+* TravelTime correlacionado com o consumo de Álcool? Pode ser justificado pela região urbana/rural?
+* Wal, Dalc, goout não parecem se relacionar muito com G1G2G3, Fedu e Medu.
+
+
+## Vamos tentar fazer uma regressão utilizando as variáveis numéricas: 
+c(7,8,15,16,17,24:33,44:53)
+
+```{r regressão}
+fit <- lm(G3.x ~failures.x + Walc.x+Dalc.x+G1.x+G2.x+absences.x+famrel.x ,data = d3)
+summary(fit)
+
+```
+Removendo as notas G1 e G2 poderemos entender melhor as variáveis, já que G1 e G2 compõem G3.
+
+```{r regressão2}
+fit <- lm(G3.x ~failures.x + Walc.x+Dalc.x+absences.x+famrel.x+traveltime.x ,data = d3)
+summary(fit)
+
+
+```
+Regrassão incluindo todasas variáveis:
+
+```{r regressão3}
+fiit <- lm(G3.x ~ . - G1.x - G2.x - G1.y - G2.y - G3.y ,data = d3)
+summary(fiit)
+
+```
+
+
+```{r regressão4}
+fit <- randomForest(G3.x ~ . - G1.x - G2.x - G1.y - G2.y - G3.y ,data = d3)
+summary(fit)
+
+```
