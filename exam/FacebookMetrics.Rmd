@@ -1,0 +1,41 @@
+---
+title: "FacebookMetrics"
+author: "Oséias Beu"
+date: "27/06/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+Local de download e entendimento da base: <https://archive.ics.uci.edu/ml/datasets/Facebook+metrics>.
+
+
+## Exercício proposto:
+
+Monte um script que leia o arquivo, execute a correlação de todas as variáveis numéricas e contrua uma regressão da quantidade de likes "Page total likes" usando as outras variáveis.
+
+Plota o sumário e verifique quais variáveis são significativamente relacionadas (****)
+
+
+
+### Leitura do arquivo: 
+
+```{r reading file}
+facebook_data <- read.csv("https://raw.githubusercontent.com/OseiasBeu/Data-Science/master/DataSets/Facebook_metrics/dataset_Facebook.csv", sep=";")
+str(facebook_data)
+```
+ Note que a única variável não numérica é a type.
+ 
+ ### Correlacioando as variáveis:
+
+```{r correlacao }
+library(corrplot)
+facebook_data <- facebook_data[, ]
+cor(facebook_data - type)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
