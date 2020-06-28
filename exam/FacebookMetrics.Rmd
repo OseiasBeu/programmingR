@@ -35,7 +35,8 @@ facebook_data_new <- facebook_data[,-2]
  ### Correlacioando as variáveis:
 
 ```{r correlacao }
-correlacao_facebook <- cor(facebook_data_new)
+correlacao_facebook <- cor
+str(correlacao_facebook)
 corrplot(correlacao_facebook)
 ```
 
@@ -44,7 +45,12 @@ fit <- lm( facebook_data_new$Page.total.likes ~ facebook_data_new$Category + fac
              ,data = facebook_data_new)
 summary(fit)
 ```
-```{r}
-facebook_data_new$Category
-```
+
+As variáveis mais significativamente relacionadas são:
+
+* Post Month:
+O que faz bastante sentido, pois o maior número de curtidas em alguma postágem sempre acontece no primeiro mês de postagem, nos meses seguintes as pessoas curtem cada vez menos pois a postagem vai ficando mais para baixo de outros posts e então começa a desaparecer.
+
+* People who have liked your Page and engaged with your post:
+Também faz muito sentido essa vatiável ser significativamente relacionada com a quantidade de likes, pois certamente terei o maior número de likes de pessoas que estão deretamente conectadas a mim e a meus posts pelo fato de termos os mesmos gostos; por esse mesmo motivo que escolhem curtir minha página ou algo do tipo.
 
