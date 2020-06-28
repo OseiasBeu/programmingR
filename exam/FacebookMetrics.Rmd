@@ -25,17 +25,26 @@ Plota o sumário e verifique quais variáveis são significativamente relacionad
 ### Leitura do arquivo: 
 
 ```{r reading file}
+library(corrplot)
 facebook_data <- read.csv("https://raw.githubusercontent.com/OseiasBeu/Data-Science/master/DataSets/Facebook_metrics/dataset_Facebook.csv", sep=";")
 str(facebook_data)
+facebook_data_new <- facebook_data[,-2]
 ```
  Note que a única variável não numérica é a type.
  
  ### Correlacioando as variáveis:
 
 ```{r correlacao }
-library(corrplot)
-facebook_data <- facebook_data[, ]
-cor(facebook_data - type)
+correlacao_facebook <- cor(facebook_data_new)
+corrplot(correlacao_facebook)
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+```{r montando regressão}
+fit <- lm( facebook_data_new$Page.total.likes ~ facebook_data_new$Category + facebook_data_new$Post.Month + facebook_data_new$Post.Weekday + facebook_data_new$Post.Hour + facebook_data_new$Paid + facebook_data_new$Lifetime.Post.Total.Reach + facebook_data_new$Lifetime.Post.Total.Impressions + facebook_data_new$Lifetime.Engaged.Users + facebook_data_new$Lifetime.Post.Consumers + facebook_data_new$Lifetime.Post.Consumptions + facebook_data_new$Lifetime.Post.Impressions.by.people.who.have.liked.your.Page + facebook_data_new$Lifetime.Post.reach.by.people.who.like.your.Page + facebook_data_new$Lifetime.People.who.have.liked.your.Page.and.engaged.with.your.post + facebook_data_new$comment + facebook_data_new$like + facebook_data_new$share + facebook_data_new$Total.Interactions
+             ,data = facebook_data_new)
+summary(fit)
+```
+```{r}
+facebook_data_new$Category
+```
+
