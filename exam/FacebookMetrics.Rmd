@@ -34,14 +34,20 @@ facebook_data_new <- facebook_data[,-2]
  
  ### Correlacioando as variáveis:
 
-```{r correlacao }
-correlacao_facebook <- cor
+```{r correlacao1 }
+correlacao_facebook <- cor(facebook_data_new)
 str(correlacao_facebook)
-corrplot(correlacao_facebook)
 ```
 
+
+```{r correlacao2  }
+corrplot(correlacao_facebook,tl.cex = 0.3, cl.cex = 0.3)
+```
+
+
 ```{r montando regressão}
-fit <- lm( facebook_data_new$Page.total.likes ~ facebook_data_new$Category + facebook_data_new$Post.Month + facebook_data_new$Post.Weekday + facebook_data_new$Post.Hour + facebook_data_new$Paid + facebook_data_new$Lifetime.Post.Total.Reach + facebook_data_new$Lifetime.Post.Total.Impressions + facebook_data_new$Lifetime.Engaged.Users + facebook_data_new$Lifetime.Post.Consumers + facebook_data_new$Lifetime.Post.Consumptions + facebook_data_new$Lifetime.Post.Impressions.by.people.who.have.liked.your.Page + facebook_data_new$Lifetime.Post.reach.by.people.who.like.your.Page + facebook_data_new$Lifetime.People.who.have.liked.your.Page.and.engaged.with.your.post + facebook_data_new$comment + facebook_data_new$like + facebook_data_new$share + facebook_data_new$Total.Interactions
+fit <- lm( facebook_data_new$Page.total.likes ~ 
+             facebook_data_new$Category + facebook_data_new$Post.Month + facebook_data_new$Post.Weekday + facebook_data_new$Post.Hour + facebook_data_new$Paid + facebook_data_new$Lifetime.Post.Total.Reach + facebook_data_new$Lifetime.Post.Total.Impressions + facebook_data_new$Lifetime.Engaged.Users + facebook_data_new$Lifetime.Post.Consumers + facebook_data_new$Lifetime.Post.Consumptions + facebook_data_new$Lifetime.Post.Impressions.by.people.who.have.liked.your.Page + facebook_data_new$Lifetime.Post.reach.by.people.who.like.your.Page + facebook_data_new$Lifetime.People.who.have.liked.your.Page.and.engaged.with.your.post + facebook_data_new$comment + facebook_data_new$like + facebook_data_new$share + facebook_data_new$Total.Interactions
              ,data = facebook_data_new)
 summary(fit)
 ```
